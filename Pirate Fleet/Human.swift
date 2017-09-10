@@ -48,7 +48,7 @@ class HumanObject: Player, Human {
     }
     
     override func addPlayerShipsMinesMonsters(_ numberOfMines: Int = 0, numberOfSeamonsters: Int = 0) {
-        controlCenter.placeItemsOnGrid(self)
+        controlCenter.placeItemsOnGrid(human:self)
     }
     
     // MARK: Calculate Final Score

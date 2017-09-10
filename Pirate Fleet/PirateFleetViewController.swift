@@ -164,37 +164,41 @@ extension PirateFleetViewController: PlayerDelegate {
         if let penaltyCell = player.lastHitPenaltyCell {
             
 // TODO:Uncomment once PenaltyCell protocol has been implemented
-//            if penaltyCell.guaranteesHit {
-//                attackedPlayer.availableMoves.append(.GuaranteedHit)
-//            } else {
-//                attackedPlayer.availableMoves.append(.NormalMove)
-//            }
+            if penaltyCell.guaranteeHit {
+                attackedPlayer.availableMoves.append(.guaranteedHit)
+            } else {
+                attackedPlayer.availableMoves.append(.normalMove)
+            }
 
             
             // mine penalty
-             if let _ = penaltyCell as? Mine {
+             if let actionMessage = penaltyCell as? Mine {
                 
                 let alertMessage = (player.playerType == .human) ? Settings.Messages.HumanHitMine : Settings.Messages.ComputerHitMine
 
                 createAlertWithTitle("Ka-boom!", message: alertMessage, actionMessage: Settings.Messages.DismissAction, completionHandler: { (action) in
                     self.dismissPenaltyAlert(player)
-                })
-            }
                 
+             let alert = UIAlertController(title: penaltyCell.penaltyText, message: Settings.Messages.ComputerHitMine, preferredStyle: .alert)
+              })
             // seamonster penalty
-            else if let _ = penaltyCell as? SeaMonster {
+             } else if let actionMessage = penaltyCell as? SeaMonster {
                 
                 let alertMessage = (player.playerType == .human) ? Settings.Messages.HumanHitMonster : Settings.Messages.ComputerHitMonster
                 
                 createAlertWithTitle("You hit a Seamonster!", message: alertMessage, actionMessage: Settings.Messages.DismissAction, completionHandler: { (action) in
                     self.dismissPenaltyAlert(player)
+                    
+                let alert = UIAlertController(title: penaltyCell.penaltyText, message: Settings.Messages.ComputerHitMonster, preferredStyle: .alert)
                 })
+                }
             }
-        } else {
+        
+        else {
             nextMove(player)
         }        
     }
-    
+        
     func playerDidWin(_ player: Player) {
         
         if gameOver == false {

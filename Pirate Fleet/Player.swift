@@ -23,7 +23,7 @@ class Player {
     
     var playerDelegate: PlayerDelegate?
     var playerType: PlayerType
-    var lastHitPenaltyCell: Cell? = nil
+    var lastHitPenaltyCell: penaltyCell? = nil
     var numberOfMisses: Int = 0
     var numberOfHits: Int = 0
     
@@ -218,12 +218,13 @@ class Player {
                 
                 var shipLocation = RandomGridLocation()
                 var vertical = Int(arc4random_uniform(UInt32(2))) == 0 ? true : false
-                var ship = Ship(length: shipLength, location: shipLocation, isVertical: vertical, isWooden: false, HitTracker: HitTracker())
+                var ship = Ship(length: shipLength, location: shipLocation, isVertical: vertical, isWooden: false, hitTracker: HitTracker())
+                
                 
                 while !gridViewController.addShip(ship, playerType: .computer) {
                     shipLocation = RandomGridLocation()
                     vertical = Int(arc4random_uniform(UInt32(2))) == 0 ? true : false
-                    ship = Ship(length: shipLength, location: shipLocation, isVertical: vertical, isWooden: false, HitTracker: HitTracker())
+                    ship = Ship(length: shipLength, location: shipLocation, isVertical: vertical, isWooden: false, hitTracker: HitTracker())
                 }
             }
         }
@@ -231,20 +232,20 @@ class Player {
         // random mine placement
         for _ in 0..<numberOfMines {
             var location = RandomGridLocation()
-            var mine = Mine(location: location)
+            var mine = Mine(guranteeHit: Mine.guranteeHit, penaltyText: Mine.penaltyText, location: location)
             while !gridViewController.addMine(mine, playerType: .computer) {
                 location = RandomGridLocation()
-                mine = Mine(location: location)
+                mine = Mine(guranteeHit: Mine.self, penaltyText: Mine.self, location: location)
             }
         }
         
         // random seamonster placement
         for _ in 0..<numberOfSeamonsters {
             var location = RandomGridLocation()
-            var seaMonster = SeaMonster(location: location)
+            var seaMonster = SeaMonster(location: location, guranteeHit: <#Bool#>,penaltyText: <#String#>)
             while !gridViewController.addSeamonster(seaMonster, playerType: .computer) {
                 location = RandomGridLocation()
-                seaMonster = SeaMonster(location: location)
+                seaMonster = SeaMonster(guranteeHit: <#Bool#>, location: location,penaltyText: <#String#>)
             }
         }
     }
